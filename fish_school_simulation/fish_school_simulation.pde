@@ -149,7 +149,8 @@ class Zoid {
     PVector escape_vec = update_escape_mode(pred_loc);
     float new_speed = match_speed(zoids);
     if (new_speed != 0) {
-      speed = constrain(new_speed, 0, max_cruise_speed*bl*4.0);
+      speed = new_speed;
+      speed = constrain(speed, 0, max_cruise_speed*bl*4.0);
     }
     if (!escape_mode) {
       if (school_vec.mag() > 0) {

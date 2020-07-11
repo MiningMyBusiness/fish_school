@@ -15,7 +15,7 @@ int hs_width=200;
 
 float body_length = 12.0;
 float max_speed = 15.0; // max speed of zoid in body_lengths/sec
-float pred_max_ratio = 0.2; // fraction of zoid max speed
+float pred_max_ratio = 0.5; // fraction of zoid max speed
 float pred_body_length = body_length*3; // predator 
 
 float rep_mult = 1.0; // number of body lengths radius of repulsion zone
@@ -28,7 +28,7 @@ void settings() {
 }
 
 void setup() {
-  frameRate(33);
+  frameRate(8);
   pred = new predator();
   zoids = new ArrayList<Zoid>();
   for (int i = 0; i < num_zoids; i++) {
@@ -87,17 +87,28 @@ void draw() {
      pred_exists = false;
    }
  }
+ float speed_sum = 0.0;
  for (int i=0; i < zoids.size(); i++) {
    Zoid z = zoids.get(i);
    z.display();
-   z.update_state(zoids, pred_loc, false);
+   z.update_state(zoids, pred_loc, true);
    z.update_position();
    z.update_zones(rep_mult, ori_mult, attr_mult);
+   speed_sum += z.speed;
  }
+ 
+ speed_sum = speed_sum/float(zoids.size());
+ textSize(15);
+ fill(0);
+ text("Avg. zoid speed: "+nf(speed_sum/body_length, 0, 2)+" body lengths/sec", width - 400, 60); 
+ 
  if (pred_create_state) {
    textSize(15);
    fill(0);
-   text("Click for predator", width - 100, 25);
+   text("Click for predator", width - 200, 75);
+   if (clicked_once) {
+     text("Registered first click", width - 200, 100);
+   }
  }
  
 }
