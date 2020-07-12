@@ -5,7 +5,7 @@ class Zoid {
   float speed;
   float bl = 3.0;
   float mu_speed = 2.0;
-  float max_cruise_speed = 4.0;
+  float max_cruise_speed = 6.0;
   float std_speed = 1.0;
   float max_speed = 25.0*bl*4.0;
   float rep_zone;
@@ -121,6 +121,8 @@ class Zoid {
     }
     if (count > 0) {
       sum = sum/count;
+      sum += (randomGaussian()*std_speed + mu_speed)*bl*4.0;
+      sum = sum/2.0;
     }
     return sum;
   }

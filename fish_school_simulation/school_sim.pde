@@ -24,11 +24,11 @@ float attr_mult = 1.0; // times larger than orientation zone radius
 float pred_mult = 7.0; // number of body lengths at which predator is detected
 
 void settings() {
-  size(1280,720);
+  size(1200,700);
 }
 
 void setup() {
-  frameRate(8);
+  frameRate(33);
   pred = new predator();
   zoids = new ArrayList<Zoid>();
   for (int i = 0; i < num_zoids; i++) {
@@ -88,19 +88,25 @@ void draw() {
    }
  }
  float speed_sum = 0.0;
+ float num_escaping = 0.0;
  for (int i=0; i < zoids.size(); i++) {
    Zoid z = zoids.get(i);
    z.display();
-   z.update_state(zoids, pred_loc, true);
+   z.update_state(zoids, pred_loc, false);
    z.update_position();
    z.update_zones(rep_mult, ori_mult, attr_mult);
    speed_sum += z.speed;
+   if (z.escape_mode) {
+     num_escaping += 1.0;
+   }
  }
  
  speed_sum = speed_sum/float(zoids.size());
+ num_escaping = 100.0*num_escaping/float(zoids.size());
  textSize(15);
  fill(0);
  text("Avg. zoid speed: "+nf(speed_sum/body_length, 0, 2)+" body lengths/sec", width - 400, 60); 
+ text("Percent escaping: "+nf(num_escaping, 0, 2)+"%", width-400, 80);
  
  if (pred_create_state) {
    textSize(15);
