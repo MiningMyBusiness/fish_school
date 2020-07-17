@@ -20,8 +20,8 @@ class predator {
     diam = r;
   }
   
-  void update_location() {
-    PVector velocity = PVector.mult(head_dir, speed);
+  void update_location(float frame_rate) {
+    PVector velocity = PVector.mult(head_dir, speed*(1.0/frame_rate));
     location.add(velocity);
   }
   

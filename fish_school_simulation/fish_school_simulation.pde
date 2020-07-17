@@ -15,8 +15,9 @@ class Zoid {
   int in_escape_mode_for = 0;
   int max_frames_escape = 5;
   float pred_thresh; // dist predator detection
+  float frame_rate; // frame rate of the simulation (for speed)
   
-  Zoid(float x, float y, float rep_mult, float ori_mult, float attr_mult, float pred_mult, float body_length, float max_speed_mult) {
+  Zoid(float x, float y, float rep_mult, float ori_mult, float attr_mult, float pred_mult, float body_length, float max_speed_mult, float some_frame_rate) {
     bl = body_length/4.0;
     max_speed = max_speed_mult*bl*4.0;
     location = new PVector(x,y);
@@ -27,6 +28,7 @@ class Zoid {
     ori_zone = rep_zone*ori_mult;
     attr_zone = ori_zone*attr_mult;
     pred_thresh = pred_mult*bl*4.0;
+    frame_rate = some_frame_rate;
   }
   
   void update_zones(float rep_mult, float ori_mult, float attr_mult) {
@@ -180,7 +182,7 @@ class Zoid {
     }
     
   void update_position() {
-    PVector velocity = PVector.mult(head_dir, speed*bl*2.0*(1/33.0));
+    PVector velocity = PVector.mult(head_dir, speed*(1.0/frame_rate));
     location = PVector.add(location, velocity);
     if (location.x < 0) {
       location.x = width;
